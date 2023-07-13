@@ -4,10 +4,10 @@ FROM python:3.7-slim
 #Atualizando e instalando o alien
 RUN apt-get update -y && apt-get install alien -y
 
-WORKDIR ./api
+WORKDIR /api
 
 # copiando requirements.txt
-COPY  requirements.txt .
+COPY requirements.txt .
 
 #Criando os argumento que serão passados no processo de build
 ARG DB_USER
@@ -41,11 +41,11 @@ ENV DB_SERVICE='desenv'
 COPY . .
 
 
-#RUN chmod +x /api/serve.sh
+RUN chmod 777 api/serve.sh
 EXPOSE 8000
 
 #Executa a aplicação
 # ENTRYPOINT - allows you to configure a container that will run as an executable.
 #ENTRYPOINT ["./api/serve.sh"]
 #ENTRYPOINT ["/api/serve.sh"]
-CMD ["sh","/api/serve.sh"]
+CMD ["sh","api/serve.sh"]

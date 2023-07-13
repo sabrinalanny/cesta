@@ -2,5 +2,4 @@ Django==4.2.3
 djangorestframework==3.14.0
 martor
 gunicorn
-cx_Oracle==7.3.0
-oracledb
+cx-Oracle==6

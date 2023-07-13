@@ -1,25 +1,29 @@
-import oracledb
+import cx_Oracle
 import os
 import platform
 
 
 d = None  # default suitable for Linux
-if platform.system() == "Darwin" and platform.machine() == "x86_64":   # macOS
-  d = os.environ.get("HOME")+("/Downloads/instantclient_12_2")
+if platform.system() == "Linux" and platform.machine() == "x86_64":   # macOS
+  d = os.environ.get("HOME")+("/desenvolvimento/instantclient_12_2")
 elif platform.system() == "Windows":
   d = r"C:\oracle\instantclient_12_2"
-oracledb.init_oracle_client(lib_dir=d)
+cx_Oracle.init_oracle_client(lib_dir=d)
 
-un = 'cm' #os.environ.get('PYTHON_USERNAME')
-pw = 'cm' #os.environ.get('PYTHON_PASSWORD')
+un = 'cm' 
+pw = 'cm' 
 host           = 'dbclone.bpark.com.br'
 port           =  1521
 service_name   = 'desenv'
 
-params = oracledb.ConnectParams(host=host, port=port, service_name=service_name)
-with oracledb.connect(user=un, password=pw, params = params) as connection:
+#params = oracledb.ConnectParams(host=host, port=port, service_name=service_name)
+#with oracledb.connect(user=un, password=pw, params = params) as connection:
+dsn = f'{un}/{pw}@{host}:{port}/{service_name}'
+print(dsn)
+connection = cx_Oracle.connect(dsn) 
+with connection as connection:
     with connection.cursor() as cursor:
-        sql = """select sysdate from dual"""
+        sql = """select * from cm.pessoa where rownum=1"""
         for r in cursor.execute(sql):
             print(r)
 
